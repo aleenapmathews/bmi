@@ -1,95 +1,177 @@
-import Image from "next/image";
-import styles from "./page.module.css";
+"use client";
+import { useState } from "react";
+import style from "./page.module.css";
+import GaugeComponent from "react-gauge-component";
 
-export default function Home() {
+export default function Page2() {
+  const [height, setHeight] = useState("");
+  const [weight, setWeight] = useState("");
+  const [bmi, setbmi] = useState(0);
+
+  function heightHandler(event: any) {
+    const a = event.target.value;
+    if (!isNaN(a)) {
+      setHeight(event.target.value);
+    }
+  }
+
+  function weightHandler(event: any) {
+    const b = event.target.value;
+    if (!isNaN(b)) {
+      setWeight(event.target.value);
+    }
+  }
+
+  function clearHandler() {
+    setHeight("");
+    setWeight("");
+    setbmi(0);
+  }
+
+  function calculateBMI() {
+    const h = parseInt(height);
+    const w = parseInt(weight);
+    const ans = (w / (h * h)) * 10000;
+    setbmi(ans);
+  }
   return (
-    <main className={styles.main}>
-      <div className={styles.description}>
-        <p>
-          Get started by editing&nbsp;
-          <code className={styles.code}>app/page.tsx</code>
-        </p>
-        <div>
-          <a
-            href="https://vercel.com?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            By{" "}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
-          </a>
-        </div>
-      </div>
+    <div className={style["main"]}>
+      <div className={style["home"]}>
+        <h1 className={style["heading"]}>BMI CALCULATOR</h1>
+        <div className={style["htgap"]}>
+          <label className={style["height"]}>Height</label>
 
-      <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
+          <input
+            type="text"
+            placeholder="cm"
+            value={height}
+            onChange={heightHandler}
+            className={style["box"]}
+          />
+        </div>
+        <div className={style["wtgap"]}>
+          <label className={style["weight"]}>Weight</label>
+
+          <input
+            type="text"
+            placeholder="kg"
+            value={weight}
+            onChange={weightHandler}
+            className={style["box"]}
+          />
+        </div>
+
+        <div className={style["btn-grp"]}>
+          <button onClick={calculateBMI} className={style["calculate"]}>
+            CHECK
+          </button>
+          <button onClick={clearHandler} className={style["clear"]}>
+            CLEAR
+          </button>
+        </div>
+        <h2 className={style["ans"]}>
+          {bmi}kg/cm<sup>2</sup>
+        </h2>
+      </div>
+      <div className={style["guage"]}>
+        <GaugeComponent 
+        
+          type="semicircle"
+          arc={{
+            width: 0.2,
+            padding: 0.005,
+            cornerRadius: 1,
+            // gradient: true,
+            subArcs: [
+              {
+                limit: 16,
+                color: "rgb(188, 32, 32)",
+                showTick: true,
+                tooltip: {
+                  text: "Severe Thinness",
+                },
+                onClick: () => console.log("AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"),
+                onMouseMove: () =>
+                  console.log("BBBBBBBBBBBBBBBBBBBBBBBBBBBBBBBB"),
+                onMouseLeave: () =>
+                  console.log("CCCCCCCCCCCCCCCCCCCCCCCCCCCCCCCC"),
+              },
+              {
+                limit: 17,
+                color: "rgb(211, 136, 136)",
+                showTick: true,
+                tooltip: {
+                  text: "Moderate Thinness	",
+                },
+              },
+              {
+                limit: 18.5,
+                color: "rgb(255, 228, 0)",
+                showTick: true,
+                tooltip: {
+                  text: "Mild Thinness",
+                },
+              },
+              {
+                limit: 25,
+                color: "rgb(0, 129, 55)",
+                showTick: true,
+                tooltip: {
+                  text: "Normal",
+                },
+              },
+              {
+                limit:30,
+                color: "rgb(255, 228, 0)",
+                tooltip: {
+                  text: "Overweight",
+                },
+              },
+              {
+                limit:35,
+                color: "rgb(211, 136, 136)",
+                tooltip: {
+                  text: "Obese Class I",
+                },
+              },
+              {
+                limit:49,
+                color: "rgb(188, 32, 32)",
+                tooltip: {
+                  text: "Obese Class II",
+                },
+              },
+              {
+                
+                color: "rgb(138, 1, 1)",
+                tooltip: {
+                  text: "Obese Class III",
+                },
+              },
+            ],
+          }}
+          pointer={{
+            color: "rgb(255, 255, 255)",
+            length: 0.8,
+            width: 15,
+            elastic: true,
+          }}
+          labels={{
+            valueLabel: { formatTextValue: (bmi) => bmi + "  bmi" },
+            tickLabels: {
+              type: "outer",
+              valueConfig: {
+                formatTextValue: (bmi) => bmi + "  bmi",
+                fontSize: 10,
+              },
+              ticks: [{ value: 13 }, { value: 22.5 }, { value: 32 }],
+            },
+          }}
+          value={bmi}
+          minValue={0}
+          maxValue={50}
         />
       </div>
-
-      <div className={styles.grid}>
-        <a
-          href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Docs <span>-&gt;</span>
-          </h2>
-          <p>Find in-depth information about Next.js features and API.</p>
-        </a>
-
-        <a
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Learn <span>-&gt;</span>
-          </h2>
-          <p>Learn about Next.js in an interactive course with&nbsp;quizzes!</p>
-        </a>
-
-        <a
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Templates <span>-&gt;</span>
-          </h2>
-          <p>Explore starter templates for Next.js.</p>
-        </a>
-
-        <a
-          href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template&utm_campaign=create-next-app"
-          className={styles.card}
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <h2>
-            Deploy <span>-&gt;</span>
-          </h2>
-          <p>
-            Instantly deploy your Next.js site to a shareable URL with Vercel.
-          </p>
-        </a>
-      </div>
-    </main>
+    </div>
   );
 }
