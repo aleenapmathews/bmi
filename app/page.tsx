@@ -160,10 +160,7 @@ export default function Page2() {
             valueLabel: { formatTextValue: (bmi) => bmi + "  bmi" },
             tickLabels: {
               type: "outer",
-              valueConfig: {
-                formatTextValue: (bmi) => bmi + "  bmi",
-                fontSize: 10,
-              },
+             
               ticks: [{ value: 13 }, { value: 22.5 }, { value: 32 }],
             },
           }}
